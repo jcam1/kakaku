@@ -41,6 +41,7 @@ jobs:
           file: Dockerfile
           tags: |
             ghcr.io/${{ github.repository }}/${{ matrix.name }}:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/${{ matrix.name }}:${{ github.ref }}
             ghcr.io/${{ github.repository }}/${{ matrix.name }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
