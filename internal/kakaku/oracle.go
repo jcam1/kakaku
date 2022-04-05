@@ -8,8 +8,8 @@ import (
 	"github.com/links-japan/kakaku/internal/client"
 	"github.com/links-japan/kakaku/internal/config"
 	"github.com/links-japan/kakaku/internal/store"
+	"github.com/links-japan/log"
 	"github.com/shopspring/decimal"
-	"github.com/sirupsen/logrus"
 )
 
 type Oracle struct {
@@ -33,16 +33,13 @@ func (o *Oracle) Price(ctx context.Context, base string, quote string) (decimal.
 	mu := sync.Mutex{}
 	source := ""
 
-	ctx, cancel := context.WithTimeout(ctx, o.cfg.RequestTimeout)
-	defer cancel()
-
 	for _, cli := range o.clients {
 		go func(cli client.Client) {
 			price, err := cli.Price(ctx, base, quote)
-			logrus.WithField("name", cli.Source()).WithField("price", price).Debug("client price")
+			log.WithField("name", cli.Source()).WithField("price", price).Debug("client price")
 
 			if err != nil {
-				logrus.Error("client price err", cli.Source(), err)
+				log.Error("client price err", cli.Source(), err)
 				return
 			}
 

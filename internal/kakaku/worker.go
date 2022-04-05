@@ -3,8 +3,9 @@ package kakaku
 import (
 	"context"
 	"fmt"
+
 	"github.com/links-japan/kakaku/internal/store"
-	"github.com/sirupsen/logrus"
+	"github.com/links-japan/log"
 )
 
 func UpdateAssetPrice(oracle *Oracle, assets *store.AssetStore, base, quote string) error {
@@ -13,9 +14,8 @@ func UpdateAssetPrice(oracle *Oracle, assets *store.AssetStore, base, quote stri
 	if err != nil {
 		return err
 	}
-	prevTerm := asset.Term
-	term := prevTerm + 1
-	logrus.WithField("term", term).Debug("update asset price")
+	term := asset.Term + 1
+	log.WithField("term", term).Debug("update asset price")
 
 	nullPrice, source := oracle.Price(context.TODO(), base, quote)
 	if !nullPrice.Valid {
@@ -26,5 +26,5 @@ func UpdateAssetPrice(oracle *Oracle, assets *store.AssetStore, base, quote stri
 	asset.Term = term
 	asset.Source = source
 
-	return assets.Update(&asset, base, quote, prevTerm)
+	return assets.Update(&asset)
 }
