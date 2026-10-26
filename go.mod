@@ -14,7 +14,7 @@ require (
 	github.com/spf13/viper v1.10.0
 	github.com/twitchtv/twirp v7.1.0+incompatible
 	google.golang.org/grpc v1.42.0
-	google.golang.org/protobuf v1.27.1
+	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/gorm v1.20.5
 )
